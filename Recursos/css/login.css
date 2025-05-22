@@ -211,3 +211,54 @@ body{
     right: 0;
     transform: translateX(0);
 }
+
+@media (max-width: 768px) {
+  .container {
+    width: 95%;
+    min-height: 550px;
+    border-radius: 20px;
+  }
+
+  .form-container {
+    padding: 0 20px;
+  }
+
+  .container form {
+    padding: 0 20px;
+  }
+
+  .toggle-panel {
+    padding: 0 15px;
+  }
+
+  .container button {
+    padding: 10px 35px;
+    font-size: 11px;
+  }
+
+  .container input {
+    font-size: 12px;
+    padding: 9px 12px;
+  }
+
+  .container p {
+    font-size: 13px;
+  }
+
+  .social-icons a {
+    width: 35px;
+    height: 35px;
+  }
+
+  .toggle {
+    width: 200%;
+  }
+
+  .toggle-container {
+    width: 50%;
+  }
+
+  .sign-in, .sign-up {
+    width: 50%;
+  }
+}
