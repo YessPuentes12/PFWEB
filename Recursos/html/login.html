@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Fix the CSS path -->
+    <link rel="stylesheet" href="../css/login.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <title>Login & Register</title>
+</head>
+<body>
+    <div class="container" id="container">
+        <div class="form-container sign-up">
+            <form>
+                <h1>Crear cuenta</h1>
+                <div class="social-icons">
+                    <a href="#" class="icons"><i class='bx bxl-google'></i></a>
+                    <a href="#" class="icons"><i class='bx bxl-facebook'></i></a>
+                    <a href="#" class="icons"><i class='bx bxl-github'></i></a>
+                    <a href="#" class="icons"><i class='bx bxl-linkedin'></i></a>
+                </div>
+                <span>Registrate con E-mail</span>
+                <input type="text" placeholder="Name">
+                <input type="email" placeholder="Enter E-mail">
+                <input type="password" placeholder="Enter Password">
+                <button>Registrate</button>
+            </form>
+        </div>
+
+
+        <div class="form-container sign-in">
+            <form>
+                <h1>Sign in</h1>
+                <div class="social-icons">
+                    <a href="#" class="icons"><i class='bx bxl-google'></i></a>
+                    <a href="#" class="icons"><i class='bx bxl-facebook'></i></a>
+                    <a href="#" class="icons"><i class='bx bxl-github'></i></a>
+                    <a href="#" class="icons"><i class='bx bxl-linkedin'></i></a>
+                </div>
+                <span>Identificate con Email y contraseña</span>
+                <input type="email" placeholder="Enter E-mail">
+                <input type="password" placeholder="Enter Password">
+                <a href="#">¿Olvidaste tu contraseña?</a>
+                <button>Entrar</button>
+            </form>
+        </div>
+
+
+        <div class="toggle-container">
+            <div class="toggle">
+                <div class="toggle-panel toggle-left">
+                    <h1>Bienvenido a <br>SSalud</h1>
+                    <p>Logeate con tu Email y contraseña</p>
+                    <button class="hidden" id="login">Desliza</button>
+                </div>
+                <div class="toggle-panel toggle-right">
+                    <h1>¿No tienes cuenta?</h1>
+                    <p>¡Puedes crear una ahora mismo!</p>
+                    <button class="hidden" id="register">Desliza</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fix the JavaScript path -->
+    <script src="../js/login.js"></script>
+</body>
+</html>
