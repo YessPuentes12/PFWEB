@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,8 +8,40 @@
     <link rel="stylesheet" href="../css/login.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <title>Login & Register</title>
+
+    <link rel="stylesheet" href="../css/navbar.css">
+    <link rel="stylesheet" href="../css/main.css">
+
+    <script defer src="../js/mobile.js"></script>
 </head>
+
 <body>
+
+    <header class="topheader">
+        <nav class="topnav">
+            <a href="#" class="logo">
+                <img height="50" width="50" src="/sec/img/heart.png" alt="pagina principal" />
+                <div>SSalud</div>
+            </a>
+
+            <button class="open-menu" aria-label="Abrir menú">
+                <img src="/sec/cvg/hamburger-icon.svg" alt="abrir menú" />
+            </button>
+
+            <ul class="menu">
+                <button class="close-menu" aria-label="Cerrar menú">
+                    <img src="/sec/cvg/close-icon.svg" alt="cerrar menú" />
+                </button>
+                <li><a href="main.html" class="selected">Inicio</a></li>
+                <li><a href="#">Cuenta</a></li>
+                <li><a href="">Servicios</a></li>
+                <li><a href="">Especialistas</a></li>
+                <li><a href="">Contactos</a></li>
+                <li><a href="localidades.html">Ubicación</a></li>
+            </ul>
+        </nav>
+    </header>
+
     <div class="container" id="container">
         <div class="form-container sign-up">
             <form>
@@ -65,4 +98,5 @@
     <!-- Fix the JavaScript path -->
     <script src="../js/login.js"></script>
 </body>
+
 </html>
