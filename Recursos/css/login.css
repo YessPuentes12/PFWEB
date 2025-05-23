@@ -7,7 +7,8 @@
     --color-text-primary: #FFFFFF; /* White text */
     --color-text-secondary: #B3B3B3; /* Light grey text */
     --color-input: #3F4152;        /* Input background */
-}
+    --color-sec: #9d98f8;
+}   
 
 *{
     margin: 0;
@@ -66,6 +67,10 @@ body{
     text-transform: uppercase;
     margin-top: 10px;
     cursor: pointer;
+}
+
+.container button:hover{
+background-color: var(--color-sec);
 }
 
 .container button.hidden{
