@@ -2,11 +2,11 @@
 
 :root {
     --color-primary: #6C63FF;      /* Modern purple/blue */
-    --color-surface: #2D2F36;      /* Dark surface */
-    --color-background: #1A1C22;   /* Deep dark background */
-    --color-text-primary: #FFFFFF; /* White text */
-    --color-text-secondary: #B3B3B3; /* Light grey text */
-    --color-input: #3F4152;        /* Input background */
+    --color-surface: #ffffff;      /* Light surface */
+    --color-background: #f8f9fa;   /* Light background */
+    --color-text-primary: #333333; /* Dark text */
+    --color-text-secondary: #666666; /* Medium grey text */
+    --color-input: #f5f5f5;        /* Light input background */
 }
 
 * {
