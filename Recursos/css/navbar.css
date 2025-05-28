@@ -16,7 +16,26 @@
     max-width: 980px;
     margin: 0 auto;
 }
+.menu .privado.disabled {
+    pointer-events: auto;
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+#logoutBtn::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: calc(100% + 4px);
+    width: 100%;
+    height: 4px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    background: var(--color-secondary, #00bcd4);
+}
 
+#logoutBtn:hover::after {
+    opacity: 0.8;
+}
 .logo {
     display: flex;
     align-items: center;

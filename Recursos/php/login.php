@@ -1,11 +1,11 @@
 <?php
 session_start();
-
-// Conexión a la base de datos
+header('Content-Type: application/json');
 $servername = "localhost";
 $username = "root";
 $password = "Mysql1234";
 $dbname = "ssaludb";
+
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
@@ -13,23 +13,18 @@ if ($conn->connect_error) {
     exit();
 }
 
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $email = $conn->real_escape_string($_POST["email"]);
-    $password = $_POST["password"];
+$data = json_decode(file_get_contents("php://input"), true);
+$email = isset($data["email"]) ? $conn->real_escape_string($data["email"]) : '';
+$password = isset($data["password"]) ? $data["password"] : '';
 
-    $sql = "SELECT users_id, password FROM users WHERE password_hash IS NULL";
-    $result = $conn->query($sql);
-    if ($result && $result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            $hashed = password_hash($row['password'], PASSWORD_BCRYPT);
-            $update_sql = "UPDATE users SET password_hash = ? WHERE users_id = ?";
-            $update_stmt = $conn->prepare($update_sql);
-            $update_stmt->bind_param("si", $hashed, $row['users_id']);
-            $update_stmt->execute();
-        }
-    }
+if (empty($email) || empty($password)) {
+    echo json_encode(["success" => false, "message" => "Faltan datos"]);
+    exit();
+}
 
-    $sql = "SELECT users_id, email, password_hash FROM users WHERE email = ?";
+// Función para manejar login y bloqueo
+function loginUser($conn, $table, $email, $password, $tipo) {
+    $sql = "SELECT id, email, password, intentos, activo, nombre FROM $table WHERE email = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $email);
     $stmt->execute();
@@ -38,22 +33,57 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if ($result && $result->num_rows > 0) {
         $user = $result->fetch_assoc();
 
-        if (password_verify($password, $user["password_hash"])) {
-            $_SESSION["user_id"] = $user["users_id"];
-            $_SESSION["email"] = $user["email"];
-
-            echo json_encode(["success" => true, "redirect" => "dashboard.html"]);
-            exit();
-        } else {
-            echo json_encode(["success" => false, "message" => "Incorrect password."]);
+        if ($user["activo"] == 0) {
+            echo json_encode(["success" => false, "message" => "Cuenta bloqueada. Contacta al administrador."]);
             exit();
         }
-    } else {
-        echo json_encode(["success" => false, "message" => "Email not found."]);
-        exit();
+
+        if ($password === $user["password"]) {
+            // Login correcto: reinicia intentos
+            $update = $conn->prepare("UPDATE $table SET intentos = 0 WHERE id = ?");
+            $update->bind_param("i", $user["id"]);
+            $update->execute();
+
+            $_SESSION["user_id"] = $user["id"];
+            $_SESSION["email"] = $user["email"];
+            $_SESSION["tipo"] = $tipo;
+            $_SESSION["nombre"] = $user["nombre"];
+            echo json_encode([
+                "success" => true,
+                "tipo" => $tipo,
+                "user_id" => $user["id"],
+                "nombre" => $user["nombre"]
+            ]);
+            exit();
+        } else {
+            // Login incorrecto: suma intento
+            $intentos = $user["intentos"] + 1;
+            $activo = $intentos >= 4 ? 0 : 1;
+            $update = $conn->prepare("UPDATE $table SET intentos = ?, activo = ? WHERE id = ?");
+            $update->bind_param("iii", $intentos, $activo, $user["id"]);
+            $update->execute();
+
+            if ($activo == 0) {
+                echo json_encode(["success" => false, "message" => "Cuenta bloqueada por demasiados intentos."]);
+            } else {
+                $restantes = 4 - $intentos;
+                echo json_encode(["success" => false, "message" => "Contraseña incorrecta. Intentos restantes: $restantes"]);
+            }
+            exit();
+        }
     }
+    // Si no existe el usuario
+    return false;
 }
 
-echo json_encode(["success" => false, "message" => "Invalid request method."]);
+// 1. Intentar login como doctor
+if (loginUser($conn, "doctores", $email, $password, "doctor") !== false) exit();
+
+// 2. Intentar login como paciente
+if (loginUser($conn, "usuarios", $email, $password, "paciente") !== false) exit();
+
+// Si no se encontró en ninguna tabla
+echo json_encode(["success" => false, "message" => "Usuario no encontrado"]);
 $conn->close();
+exit();
 ?>

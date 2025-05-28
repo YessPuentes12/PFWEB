@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Documentos de Citas Médicas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0; /* Reset margin */
+            padding: 0; /* Reset padding */
+            background-color: #a4a2a2;
+            color: #333;
+        }
+        .header-bar {
+            background-color: #6C63FF; /* Dark blue */
+            color: white;
+            padding: 15px 30px; /* Increased padding */
+            text-align: center; /* Center title */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Subtle shadow */
+        }
+        .header-bar h1 {
+            margin: 0;
+            font-size: 1.8em; /* Larger font size */
+        }
+        .container {
+            max-width: 900px; /* Max width for content */
+            margin: 30px auto; /* Centered with more margin */
+            background-color: #fff;
+            padding: 25px; /* Increased padding */
+            border-radius: 8px;
+            box-shadow: 0 0 12px rgba(0,0,0,0.1); /* Softer shadow */
+        }
+        .user-info {
+            text-align: right;
+            margin-bottom: 20px;
+            font-size: 0.9em;
+            color: #555;
+        }
+        .appointment-card {
+            border: 1px solid #ddd;
+            border-radius: 6px; /* Slightly more rounded */
+            padding: 20px; /* Increased padding */
+            margin-bottom: 20px; /* More spacing */
+            background-color: #f9f9f9;
+            transition: box-shadow 0.3s ease; /* Smooth transition for hover */
+        }
+        .appointment-card:hover {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Shadow on hover */
+        }
+        .appointment-card h3 {
+            margin-top: 0;
+            color: #007bff; /* Standard blue */
+            font-size: 1.4em; /* Larger heading */
+            margin-bottom: 15px;
+        }
+        .appointment-card p {
+            margin-bottom: 8px; /* Reduced space between paragraphs */
+            line-height: 1.6; /* Improved readability */
+        }
+        .download-pdf-btn {
+            background-color: #28a745; /* Green */
+            color: white;
+            padding: 12px 18px; /* Larger button */
+            border: none;
+            border-radius: 5px; /* More rounded */
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s ease; /* Smooth transition */
+        }
+        .download-pdf-btn:hover {
+            background-color: #218838; /* Darker green */
+        }
+        .alert-message {
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+        }
+        .alert-login {
+            color: #721c24;
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            text-align: center;
+        }
+        .alert-login a {
+            color: #721c24;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+        .no-appointments {
+            text-align: center;
+            font-style: italic;
+            color: #666;
+            padding: 20px;
+        }
+
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
+</head>
+<body>
+    <div class="header-bar">
+        <h1 id="pageTitle">Mis Documentos de Citas</h1>
+    </div>
+
+    <div class="container">
+        <div id="userInfo" class="user-info"></div>
+        <div id="appointmentsContainer">
+            </div>
+    </div>
+
+    <script>
+        // Sample appointment data (in a real application, you would fetch this from a server based on userId)
+        // IMPORTANT: For this example, ensure your login script sets 'userId' in sessionStorage
+        // that matches one of the 'paciente.id' values below (e.g., 'P001' or 'P002').
+        const allAppointmentsData = [
+            {
+                id: "cita001",
+                fecha: "2024-05-15",
+                paciente: { nombre: "Ana Martínez", id: "P001" }, // userId for Ana
+                estatura: 165,
+                presionArterial: "120/80",
+                tipoDeSangre: "A+",
+                condicionesMedicas: [
+                    { condicion: "Hipertensión", estado: "Controlada" },
+                    { condicion: "Migraña Crónica", estado: "En tratamiento" }
+                ],
+                descripcionConsulta: "Paciente acude a control rutinario de hipertensión. Refiere sentirse bien.",
+                medicamentosRecetados: [
+                    { nombre: "Losartán", dosis: "50mg", frecuencia: "1 vez al día", duracion: "Permanente" }
+                ]
+            },
+            {
+                id: "cita002",
+                fecha: "2024-05-20",
+                paciente: { nombre: "Carlos López", id: "P002" }, // userId for Carlos
+                estatura: 178,
+                presionArterial: "130/85",
+                tipoDeSangre: "O-",
+                condicionesMedicas: [
+                    { condicion: "Hipertensión", estado: "Leve, inicio de tratamiento" },
+                    { condicion: "Asma", estado: "Controlada con inhalador" }
+                ],
+                descripcionConsulta: "Primera consulta por detección de presión arterial ligeramente elevada.",
+                medicamentosRecetados: [
+                    { nombre: "Enalapril", dosis: "10mg", frecuencia: "1 vez al día", duracion: "3 meses (reevaluar)" }
+                ]
+            },
+            {
+                id: "cita003",
+                fecha: "2024-06-01",
+                paciente: { nombre: "Ana Martínez", id: "P001" }, // Another appointment for Ana
+                estatura: 165,
+                presionArterial: "118/78",
+                tipoDeSangre: "A+",
+                condicionesMedicas: [
+                    { condicion: "Hipertensión", estado: "Estable" },
+                    { condicion: "Migraña Crónica", estado: "Mejoría con nuevo tratamiento" }
+                ],
+                descripcionConsulta: "Seguimiento de migraña y control de HTA. Paciente reporta disminución en frecuencia de cefaleas.",
+                medicamentosRecetados: [
+                    { nombre: "Losartán", dosis: "50mg", frecuencia: "1 vez al día", duracion: "Permanente" },
+                    { nombre: "Sumatriptán", dosis: "50mg", frecuencia: "Al inicio de migraña", duracion: "Según necesidad" }
+                ]
+            }
+        ];
+
+        function generateAppointmentPDF(appointment) {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            doc.setFontSize(18);
+            doc.text("Detalle de Cita Médica", 105, 22, null, null, "center");
+
+            doc.setFontSize(12);
+            doc.text(`Fecha de Cita: ${appointment.fecha}`, 14, 35);
+            doc.text(`Paciente: ${appointment.paciente.nombre}`, 14, 42);
+            doc.text(`ID Paciente: ${appointment.paciente.id}`, 14, 49);
+            
+            let currentY = 60;
+
+            doc.setFontSize(14);
+            doc.setFont(undefined, 'bold');
+            doc.text("1. Datos Verificados en la Cita", 14, currentY);
+            currentY += 8;
+            doc.setFontSize(11);
+            doc.setFont(undefined, 'normal');
+            doc.text(`- Estatura: ${appointment.estatura} cm`, 18, currentY); currentY += 7;
+            doc.text(`- Presión Arterial: ${appointment.presionArterial} mmHg`, 18, currentY); currentY += 7;
+            doc.text(`- Tipo de Sangre: ${appointment.tipoDeSangre}`, 18, currentY); currentY += 10;
+
+            doc.setFontSize(14);
+            doc.setFont(undefined, 'bold');
+            doc.text("2. Condiciones Médicas", 14, currentY);
+            currentY += 2; // Reduced space before table
+            const conditionsTableBody = appointment.condicionesMedicas.map(cond => [cond.condicion, cond.estado]);
+            doc.autoTable({
+                startY: currentY,
+                head: [['Condición', 'Estado']],
+                body: conditionsTableBody,
+                theme: 'grid',
+                headStyles: { fillColor: [40, 167, 69] }, // Green header
+                margin: { left: 14, right: 14 }
+            });
+            currentY = doc.previousAutoTable.finalY + 10;
+
+            doc.setFontSize(14);
+            doc.setFont(undefined, 'bold');
+            doc.text("3. Descripción de la Consulta", 14, currentY);
+            currentY += 8;
+            doc.setFontSize(11);
+            doc.setFont(undefined, 'normal');
+            const consultText = doc.splitTextToSize(appointment.descripcionConsulta, doc.internal.pageSize.getWidth() - 28);
+            doc.text(consultText, 14, currentY);
+            currentY += (consultText.length * 5) + 5; 
+
+            if (currentY > 250) { doc.addPage(); currentY = 20; } // Check for page break
+
+            doc.setFontSize(14);
+            doc.setFont(undefined, 'bold');
+            doc.text("4. Medicamentos Recetados", 14, currentY);
+            currentY += 2; // Reduced space
+            const medsTableBody = appointment.medicamentosRecetados.map(med => [med.nombre, med.dosis, med.frecuencia, med.duracion]);
+            doc.autoTable({
+                startY: currentY,
+                head: [['Medicamento', 'Dosis', 'Frecuencia', 'Duración']],
+                body: medsTableBody,
+                theme: 'grid',
+                headStyles: { fillColor: [40, 167, 69] },
+                margin: { left: 14, right: 14 }
+            });
+            currentY = doc.previousAutoTable.finalY + 10;
+
+            doc.setFontSize(9);
+            doc.setTextColor(150);
+            const pageCount = doc.internal.getNumberOfPages();
+            for (let i = 1; i <= pageCount; i++) {
+                doc.setPage(i);
+                doc.text(`Página ${i} de ${pageCount}`, doc.internal.pageSize.getWidth() / 2, 285, { align: 'center' });
+                doc.text(`Documento generado el: ${new Date().toLocaleDateString()}`, 14, 285);
+            }
+            
+            doc.save(`Detalle_Cita_${appointment.paciente.nombre.replace(/\s+/g, '_')}_${appointment.fecha}.pdf`);
+        }
+
+        function displayUserAppointments(appointmentsToDisplay, userName, userId) {
+            const container = document.getElementById('appointmentsContainer');
+            const userInfoDiv = document.getElementById('userInfo');
+            const pageTitle = document.getElementById('pageTitle');
+
+            pageTitle.textContent = `Documentos de Citas de ${userName}`;
+            userInfoDiv.textContent = `Usuario: ${userName} (ID: ${userId})`;
+
+
+            if (!appointmentsToDisplay || appointmentsToDisplay.length === 0) {
+                container.innerHTML = `<p class="no-appointments">No tiene citas registradas, ${userName}.</p>`;
+                return;
+            }
+
+            container.innerHTML = ''; // Clear previous content
+            appointmentsToDisplay.forEach(app => {
+                const card = document.createElement('div');
+                card.className = 'appointment-card';
+                card.innerHTML = `
+                    <h3>Cita del ${app.fecha}</h3>
+                    <p><strong>Paciente:</strong> ${app.paciente.nombre}</p>
+                    <p><strong>Presión Arterial:</strong> ${app.presionArterial}</p>
+                    <p><strong>Resumen Consulta:</strong> ${app.descripcionConsulta.substring(0, 120)}...</p>
+                    <button class="download-pdf-btn" data-appointment-id="${app.id}">Descargar PDF de la Cita</button>
+                `;
+                container.appendChild(card);
+
+                const button = card.querySelector('.download-pdf-btn');
+                button.addEventListener('click', () => {
+                    // Find the full appointment details from the original (or fetched) list
+                    const appointmentDetails = allAppointmentsData.find(fullApp => fullApp.id === app.id && fullApp.paciente.id === userId);
+                    if (appointmentDetails) {
+                        generateAppointmentPDF(appointmentDetails);
+                    } else {
+                        console.error('Could not find appointment details for ID:', app.id, 'and user ID:', userId);
+                        alert('Error: No se encontraron los detalles completos de la cita.');
+                    }
+                });
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const isLoggedIn = sessionStorage.getItem('isLoggedIn');
+            const userId = sessionStorage.getItem('userId'); // e.g., 'P001', 'P002'
+            // const userType = sessionStorage.getItem('userType'); // 'paciente' or 'doctor'
+
+            const container = document.getElementById('appointmentsContainer');
+            const pageTitle = document.getElementById('pageTitle');
+
+
+            if (isLoggedIn !== 'true' || !userId) {
+                pageTitle.textContent = 'Acceso Restringido';
+                container.innerHTML = 
+                    `<div class="alert-message alert-login">
+                        Debe iniciar sesión para ver sus documentos de citas. <br>
+                        <a href="login.html">Ir a Iniciar Sesión</a>
+                     </div>`; // Asegúrate de que login.html sea tu página de login
+                document.getElementById('userInfo').style.display = 'none';
+                return;
+            }
+
+            // In a real app, you would fetch data from the server:
+            // fetch(`../php/get_user_appointments.php?userId=${userId}`)
+            //   .then(response => response.json())
+            //   .then(userAppointments => {
+            //      const patientData = allAppointmentsData.find(app => app.paciente.id === userId);
+            //      const userName = patientData ? patientData.paciente.nombre : "Usuario";
+            //      displayUserAppointments(userAppointments, userName, userId);
+            //   })
+            //   .catch(error => {
+            //      console.error('Error fetching appointments:', error);
+            //      container.innerHTML = "<p class='alert-message alert-login'>Error al cargar las citas. Intente más tarde.</p>";
+            //   });
+
+            // For this example, we filter the local 'allAppointmentsData'
+            const userAppointments = allAppointmentsData.filter(app => app.paciente.id === userId);
+            
+            // Get user's name for display (from the first appointment, assuming it's consistent)
+            const patientData = allAppointmentsData.find(app => app.paciente.id === userId);
+            const userName = patientData ? patientData.paciente.nombre : "Usuario Desconocido";
+            
+            displayUserAppointments(userAppointments, userName, userId);
+        });
+
+    </script>
+
+</body>
+</html>
