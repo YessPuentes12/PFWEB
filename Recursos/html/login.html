@@ -17,6 +17,26 @@
     <link rel="stylesheet" href="../css/main.css">
 
     <script defer src="../js/mobile.js"></script>
+
+    <style>
+        #logoutBtn {
+            background-color: var(--color-primary);
+            color: #fff;
+            font-size: 13px;
+            padding: 10px;
+            border: none;
+            font-weight: 600;
+            border-radius: 7px;
+            cursor: pointer;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            transition: 0.2s ease-in;
+        }
+
+        #logoutBtn:hover {
+        background-color: var(--color-sec);
+        }
+    </style>
 </head>
 
 <body>
@@ -49,7 +69,7 @@
             </ul>
         </nav>
     </header>
-    
+
     <div class="container" id="container">
         <div class="form-container sign-up">
             <form>
@@ -103,36 +123,36 @@
         </div>
     </div>
     <script>
-    // Simulación: Cambia esto por tu lógica real de sesión
-    const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
+        // Simulación: Cambia esto por tu lógica real de sesión
+        const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
 
-    // Selecciona los enlaces privados
-    document.querySelectorAll('.menu .privado').forEach(link => {
-        if (!isLoggedIn) {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                alert('Debes iniciar sesión para acceder a esta sección.');
+        // Selecciona los enlaces privados
+        document.querySelectorAll('.menu .privado').forEach(link => {
+            if (!isLoggedIn) {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    alert('Debes iniciar sesión para acceder a esta sección.');
+                });
+                link.classList.add('disabled');
+                link.style.pointerEvents = 'auto'; // Permite el click para mostrar el alert
+                link.style.opacity = '0.5';
+            }
+        });
+        // Mostrar u ocultar el botón de cerrar sesión
+        const logoutBtn = document.getElementById('logoutBtn');
+        if (logoutBtn) {
+            if (isLoggedIn) {
+                logoutBtn.style.display = 'inline-block';
+            } else {
+                logoutBtn.style.display = 'none';
+            }
+
+            logoutBtn.addEventListener('click', function () {
+                sessionStorage.removeItem('isLoggedIn');
+                // Opcional: redirige al login o recarga la página
+                window.location.href = 'login.html';
             });
-            link.classList.add('disabled');
-            link.style.pointerEvents = 'auto'; // Permite el click para mostrar el alert
-            link.style.opacity = '0.5';
         }
-    });
-    // Mostrar u ocultar el botón de cerrar sesión
-const logoutBtn = document.getElementById('logoutBtn');
-if (logoutBtn) {
-    if (isLoggedIn) {
-        logoutBtn.style.display = 'inline-block';
-    } else {
-        logoutBtn.style.display = 'none';
-    }
-
-    logoutBtn.addEventListener('click', function() {
-        sessionStorage.removeItem('isLoggedIn');
-        // Opcional: redirige al login o recarga la página
-        window.location.href = 'login.html';
-    });
-}
     </script>
     <!-- Fix the JavaScript path -->
     <script src="../js/login.js"></script>
