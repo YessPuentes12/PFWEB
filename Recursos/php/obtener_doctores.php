@@ -1,5 +1,5 @@
 <?php
-$conexion = new mysqli("localhost", "root", "", "ssalud");
+$conexion = new mysqli("localhost", "root", "12345", "pfweb_db");
 
 if ($conexion->connect_error) {
     die("Error de conexión: " . $conexion->connect_error);

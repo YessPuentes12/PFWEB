@@ -2,8 +2,8 @@
 header('Content-Type: application/json');
 $servername = "localhost";
 $username = "root";
-$password = "Mysql1234";
-$dbname = "ssaludb";
+$password = "12345";
+$dbname = "pfweb_db";
 $conn = new mysqli($servername, $username, $password, $dbname);
 
 $data = json_decode(file_get_contents("php://input"), true);

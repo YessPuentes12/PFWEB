@@ -6,8 +6,8 @@ header('Content-Type: application/json');
 // Conexión a la base de datos
 $servername = "localhost";
 $username = "root";
-$password = "Mysql1234";
-$dbname = "Ssalud";
+$password = "12345";
+$dbname = "pfweb_db";
 $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
     echo json_encode(["success" => false, "message" => "Error de conexión"]);

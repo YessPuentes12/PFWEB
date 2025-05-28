@@ -4,7 +4,7 @@ header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Headers: Content-Type');
 header('Content-Type: application/json');
 
-$conexion = new mysqli("localhost", "root", "", "ssalud");
+$conexion = new mysqli("localhost", "root", "12345", "pfweb_db");
 
 if ($conexion->connect_error) {
     http_response_code(500);
