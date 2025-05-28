@@ -5,7 +5,7 @@
 }
 
 body {
-    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/sec/img/doctores.jpg');
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('http://localhost/PFWEB/sec/img/doctores.jpg');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
