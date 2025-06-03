@@ -47,60 +47,76 @@
 
     <section class="inicio">
         <div class="contenido">
-            <img src="http://localhost/PFWEB/sec/img/doctores.jpg" alt="Equipo médico" class="imagen-inicio">
+            <img src="http://localhost/PFWEB/sec/img/doctores.jpg" alt="Equipo médico" class="imagen-inicio" />
             <div class="texto-inicio">
                 <h1>-Bienvenido a SSalud-</h1>
-                <p>
-                    Tu sistema médico en línea diseñado para facilitar la gestión y reserva de citas médicas de forma
-                    rápida,
-                    segura y desde cualquier lugar.
+                <p class="texto-inicio1">
+                    En SSalud, estamos dedicados a ofrecerte una experiencia médica en línea moderna, conveniente y
+                    confiable. Nuestro sistema ha sido desarrollado pensando en tu bienestar, facilitando el acceso a
+                    servicios médicos de calidad desde la comodidad de tu hogar u oficina.
+                </p>
+                <p class="texto-inicio2">
+                    Desde reservar citas con especialistas, verificar horarios en tiempo real, recibir recordatorios de
+                    tus consultas, hasta acceder a un directorio completo de profesionales y servicios médicos. Nuestro
+                    objetivo es simplificar tu cuidado de salud, ahorrándote tiempo y esfuerzo, y asegurando que recibas
+                    atención rápida y efectiva.
+                </p>
+                <p class="texto-inicio3">
+                    Pero más allá de la tecnología, contamos con un equipo de profesionales comprometidos en brindarte
+                    atención humana, cálida y personalizada. Porque tu salud es nuestra prioridad, en SSalud trabajamos
+                    día a día para que puedas tener confianza en cada paso de tu camino hacia el bienestar.
+                </p>
+                <p class="texto-inicio4">
+                    ¡Te invitamos a explorar todas nuestras funcionalidades y a formar parte de nuestra comunidad
+                    saludable! Tu salud nunca había sido tan fácil y accesible.
                 </p>
                 <ul>
-                    <li>Agendar citas con especialistas en pocos pasos.</li>
-                    <li>Consultar horarios disponibles en tiempo real.</li>
-                    <li>Recibir recordatorios y notificaciones importantes.</li>
-                    <li>Acceder a un directorio completo de servicios médicos.</li>
+                    <li>Reserva, gestión y seguimiento de citas médicas en línea.</li>
+                    <li>Consulta horarios y disponibilidad en tiempo real.</li>
+                    <li>Recibe recordatorios y notificaciones importantes.</li>
+                    <li>Accede a un directorio completo de servicios y especialistas.</li>
+                    <li>Consulta tus antecedentes y resultados en cualquier momento.</li>
                 </ul>
-                <p>
-                    En SSalud trabajamos para que el cuidado de tu salud esté siempre al alcance de tu mano.
-                    <strong>¡Tu bienestar es nuestra prioridad!</strong>
+                <p class="texto-inicio5">
+                    En SSalud, trabajamos para que el cuidado de tu salud esté siempre a un clic de distancia. ¡Tu
+                    bienestar es nuestra prioridad!
                 </p>
             </div>
         </div>
     </section>
 
-<script>
-// Simulación: Cambia esto por tu lógica real de sesión
-const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
+    <script>
+        // Simulación: Cambia esto por tu lógica real de sesión
+        const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
 
-// Selecciona los enlaces privados
-document.querySelectorAll('.menu .privado').forEach(link => {
-    if (!isLoggedIn) {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            alert('Debes iniciar sesión para acceder a esta sección.');
+        // Selecciona los enlaces privados
+        document.querySelectorAll('.menu .privado').forEach(link => {
+            if (!isLoggedIn) {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    alert('Debes iniciar sesión para acceder a esta sección.');
+                });
+                link.classList.add('disabled');
+                link.style.pointerEvents = 'auto'; // Permite el click para mostrar el alert
+                link.style.opacity = '0.5';
+            }
         });
-        link.classList.add('disabled');
-        link.style.pointerEvents = 'auto'; // Permite el click para mostrar el alert
-        link.style.opacity = '0.5';
-    }
-});
-// Mostrar u ocultar el botón de cerrar sesión
-const logoutBtn = document.getElementById('logoutBtn');
-if (logoutBtn) {
-    if (isLoggedIn) {
-        logoutBtn.style.display = 'inline-block';
-    } else {
-        logoutBtn.style.display = 'none';
-    }
+        // Mostrar u ocultar el botón de cerrar sesión
+        const logoutBtn = document.getElementById('logoutBtn');
+        if (logoutBtn) {
+            if (isLoggedIn) {
+                logoutBtn.style.display = 'inline-block';
+            } else {
+                logoutBtn.style.display = 'none';
+            }
 
-    logoutBtn.addEventListener('click', function() {
-        sessionStorage.removeItem('isLoggedIn');
-        // Opcional: redirige al login o recarga la página
-        window.location.href = 'login.html';
-    });
-}
-</script>
+            logoutBtn.addEventListener('click', function () {
+                sessionStorage.removeItem('isLoggedIn');
+                // Opcional: redirige al login o recarga la página
+                window.location.href = 'login.html';
+            });
+        }
+    </script>
 </body>
 
 </html>

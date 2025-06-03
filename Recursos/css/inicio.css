@@ -1,67 +1,112 @@
-.inicio {
-  padding: 60px 0;
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-body{
-  background-color: var( --color-background);
+body {
+  background-color: var(--color-background);
+  line-height: 1.6;
 }
 
 .contenido {
-  max-width: 1100px;
+  width: 90%;
+  max-width: 1200px;
   margin: 0 auto;
-  display: block;
-  padding: 0 20px;
+  padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 40px;
+  margin-bottom: 40px;
+}
+
+h1 {
+  text-align: center;
+  color: var(--color-shadow-primary);
+  margin-bottom: 30px;
+}
+
+h2,
+h3 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+ul {
+  margin-left: 20px;
+  margin-bottom: 20px;
+}
+
+li {
+  margin-bottom: 8px;
+  color: var(--color-text-primary);
+  font-size: 14px;
 }
 
 .imagen-inicio {
-  width: 65%;
+  flex: 1 1 400px;
+  max-width: 450px;
+  min-width: 300px;
+  height: auto;
   border-radius: 12px;
-  float: left;
-  margin-right: 30px;
-  box-shadow: 0 4px 6px var(--color-text-2);
+  box-shadow: 0 4px 8px var(--color-text-2);
   object-fit: cover;
 }
 
 .texto-inicio {
-  overflow: hidden;
+  flex: 1 1 500px;
+  max-width: 700px;
+  margin: 0 auto;
+  padding-right: 10px;
+  font-size: 18px;
+  line-height: 1.8;
+  text-align: justify;
+}
+
+.texto-inicio1,
+.texto-inicio2,
+.texto-inicio3,
+.texto-inicio4,
+.texto-inicio5 {
   font-size: 16px;
 }
 
-.texto-inicio h1 {
-  font-size: 30px;
-  margin-bottom: 20px;
-  color: var(--color-shadow-primary);
-  font-weight: 600;
-}
-
-.texto-inicio ul {
-  padding-left: 20px;
-  margin: 15px 0;
-  color: var(--color-text-primary);
-}
-
-.texto-inicio li {
-  margin-bottom: 10px;
-}
-
-.texto-inicio strong {
+.texto-inicio2,
+.texto-inicio4 {
   color: var(--color-secondary);
 }
 
+.texto-inicio5 {
+  font-weight: 600;
+}
 
-@media (max-width: 950px) {
+.texto-inicio p {
+  margin-bottom: 16px;
+}
+
+@media (max-width: 768px) {
+  .contenido {
+    background-color: var(--color-primary);
+    padding: 20px 30px;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px var(--color-shadow-primary);
+  }
+
   .imagen-inicio {
     width: 100%;
-    float: none;
-    margin: 0 0 20px 0;
+    max-width: 450px;
+    margin: 0 auto;
   }
 
   .texto-inicio {
-    font-size: 15px;
-    padding: 0 10px;
-    background-color: var(--color-primary);
-    border-radius: 20px;
-    padding: 20px 30px;
-    box-shadow: 0 4px 5px var(--color-shadow-primary);
+    width: 100%;
+    margin-top: 20px;
   }
 }
