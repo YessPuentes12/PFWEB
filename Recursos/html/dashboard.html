@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSalud - Panel de Usuario</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/navbar.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <script defer src="../js/mobile.js"></script>
+</head>
+<body>
+
+    <header class="topheader">
+        <nav class="topnav">
+            <a href="#" class="logo">
+                <img height="50" width="50" src="/sec/img/heart.png" alt="pagina principal" />
+                <div>SSalud</div>
+            </a>
+
+            <button class="open-menu" aria-label="Abrir menú">
+                <img src="/sec/cvg/hamburger-icon.svg" alt="abrir menú" />
+            </button>
+
+            <ul class="menu">
+                <button class="close-menu" aria-label="Cerrar menú">
+                    <img src="/sec/cvg/close-icon.svg" alt="cerrar menú" />
+                </button>
+                <li><a href="main.html" class="selected">Inicio</a></li>
+                <li><a href="dashboard.html" class="privado">Citas</a></li>
+                <li><a href="appointments.html" class="privado">Agendar</a></li>
+                <li><a href="servicios.html">Servicios</a></li>
+                <li><a href="especialistas.html">Especialistas</a></li>
+                <li><a href="contactos.html">Contactos</a></li>
+                <li><a href="localidades.html">Ubicación</a></li>
+                <li><a href="login.html">Cuenta</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="dashboard-container">
+        <section class="user-info">
+            <div class="user-profile">
+                <h2>Bienvenido/a, <span id="userName">Usuario</span></h2>
+                <p class="last-visit">Última visita: <span id="lastVisit">10/01/2024</span></p>
+            </div>
+        </section>
+
+        <section class="upcoming-appointments">
+            <h3>Próximas Citas</h3>
+            <div class="appointments-list" id="appointmentsList">
+                <!-- Las citas se cargarán dinámicamente aquí -->
+            </div>
+        </section>
+
+        <section class="quick-actions">
+            <h3>Acciones Rápidas</h3>
+            <div class="actions-grid">
+                <a  href="appointments.html" class="action-button">Nueva Cita</a>
+                <button class="action-button">Ver Historial</button>
+                <button class="action-button">Resultados</button>
+                <button class="action-button">Documentos</button>
+            </div>
+        </section>
+    </main>
+
+<script>
+const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
+
+document.querySelectorAll('.menu .privado').forEach(link => {
+    if (!isLoggedIn) {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            alert('Debes iniciar sesión para acceder a esta sección.');
+        });
+        link.classList.add('disabled');
+        link.style.pointerEvents = 'auto'; 
+        link.style.opacity = '0.5';
+    }
+});
+
+const logoutBtn = document.getElementById('logoutBtn');
+if (logoutBtn) {
+    if (isLoggedIn) {
+        logoutBtn.style.display = 'inline-block';
+    } else {
+        logoutBtn.style.display = 'none';
+    }
+
+    logoutBtn.addEventListener('click', function() {
+        sessionStorage.removeItem('isLoggedIn');
+        window.location.href = 'login.html';
+    });
+}
+function editarCita(cita) {
+    sessionStorage.setItem('citaEditar', JSON.stringify(cita));
+    window.location.href = 'appointments.html';
+}
+
+function eliminarCita(id) {
+    if (confirm("¿Estás seguro de que deseas eliminar esta cita?")) {
+        fetch('../php/eliminar_cita.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ cita_id: id })
+        })
+        .then(res => res.json())
+        .then(response => {
+            alert(response.message);
+            location.reload();
+        });
+    }
+}
+document.addEventListener("DOMContentLoaded", function() {
+    const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
+    const userType = sessionStorage.getItem('userType');
+    const userId = sessionStorage.getItem('userId');
+
+    if (isLoggedIn && userType && userId) {
+        fetch('../php/get_appointments.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userType, userId })
+        })
+        .then(res => res.json())
+        .then(citas => {
+            const appointmentsList = document.getElementById('appointmentsList');
+            appointmentsList.innerHTML = '';
+            if (!citas || citas.length === 0) {
+                appointmentsList.innerHTML = '<p>No hay citas registradas.</p>';
+            } else {
+                citas.forEach(cita => {
+                    appointmentsList.innerHTML += `
+                        <div class="appointment-card">
+                            <div class="appointment-date">${cita.fecha}</div>
+                            <div class="appointment-time">${cita.hora}</div>
+                            <div class="appointment-doctor">${cita.doctor_nombre ? cita.doctor_nombre : ''}</div>
+                            <div class="appointment-type">${cita.motivo}</div>
+                            <button class="appointment-action" onclick='editarCita(${JSON.stringify(cita)})'>Modificar</button>
+                            <button class="appointment-action eliminar-btn" onclick='eliminarCita(${cita.id})'>Eliminar</button>
+                        </div>
+                    `;
+                });
+            }
+        });
+    }
+
+});
+
+</script>
+
+</body>
+</html>

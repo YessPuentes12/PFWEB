@@ -1,0 +1,22 @@
+Ola amiguitos, pa la base de datos necesitan crear una nueva conexion en MySQL workbench con los siguientes datos:
+
+Nombre de la conexion: Lo q sea, puede ser "papaya" si gustan.
+Metodo de la conexion: standard
+Hostname: 127.0.0.1	Port: 3306 (igual q xampp)
+Username: root
+Password: Lo dejan vacio pai, no necesitan
+Defautl Schema: ssalud
+
+Ojo pai, pa q esto funcione, tienen que tener la base de datos ya importada.
+
+Para eso:
+Se van file (o archivo)
+Le dan abrir SQL script (or so)
+Y ahi, buscan el ssalud.sql que esta en el repo
+Y ya con eso pai.
+
+Suerte, los tqm.
+Quiza los vea mañana cuando vaya con arzolita.
+Pero weno.
+
+Profe: Cuidese mucho, si me reprueba, lo veo el proximo semestre, si me aprueba, en invierno le doy un pan. c:
