@@ -1,0 +1,178 @@
+:root {
+    --color-card-bg: rgba(255, 255, 255, 0.9);
+    --color-action-button: #6C63FF;
+    --color-action-button-hover: #5750d9;
+}
+
+body {
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('http://localhost/PFWEB/sec/img/doctores.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    min-height: 100vh;
+    padding-top: 80px;
+}
+
+h3 {
+    text-align: center;
+}
+
+.dashboard-container {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 30px;
+}
+
+.user-info {
+    background-color: var(--color-card-bg);
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.user-profile h2 {
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.last-visit {
+    color: #666;
+    font-size: 0.9em;
+}
+
+.upcoming-appointments {
+    background-color: var(--color-card-bg);
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.upcoming-appointments h3 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.appointments-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.appointment-card {
+    background-color: white;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.appointment-date {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.appointment-time {
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.appointment-doctor {
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.appointment-type {
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.appointment-action {
+    background-color: var(--color-action-button);
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.appointment-action:hover {
+    background-color: var(--color-action-button-hover);
+}
+
+.quick-actions {
+    background-color: var(--color-card-bg);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.quick-actions h3 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.actions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.action-button {
+    background-color: var(--color-action-button);
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in;
+    font-size: 0.9em;
+    font-weight: 600;
+    width: 100%;
+}
+
+.form-group input,
+select {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-bottom: 1px solid black;
+    outline: none;
+    border-radius: 7px;
+    margin: 10px -7px;
+}
+
+.form-group textarea {
+    width: 100%;
+    margin: 10px -7px;
+    border: none;
+    outline: none;
+    border-radius: 7px;
+    border-bottom: 1px solid black;
+}
+
+.action-button:hover {
+    background-color: var(--color-action-button-hover);
+}
+
+@media (max-width: 768px) {
+    .dashboard-container {
+        padding: 10px;
+    }
+
+    .appointments-list {
+        grid-template-columns: 1fr;
+    }
+
+    .actions-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .actions-grid {
+        grid-template-columns: 1fr;
+    }
+}
